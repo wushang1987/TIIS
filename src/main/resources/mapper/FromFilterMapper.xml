@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.train.excel.dao.FromFilterDao">
+
+	<select id="getAllCode" resultType="string">
+		SELECT code_ FROM t_from_filter;
+	</select>
+	
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO t_from_filter
+		(
+			code_,
+			create_time_
+		)
+		VALUES
+		(
+			#{code, jdbcType=VARCHAR},
+			#{createTime}
+		)
+	</insert>
+
+	<delete id="deleteById">
+		DELETE FROM t_from_filter WHERE id_ #{id}
+	</delete>
+
+
+</mapper>            

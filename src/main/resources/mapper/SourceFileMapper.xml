@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.train.excel.dao.SourceFileDao">
+
+	<resultMap type="SourceFile" id="sourceFile">
+		<id column="id_" property="id" />
+		<result column="file_id_" property="fileId" />
+		<result column="file_name_" property="fileName" />
+		<result column="file_path_" property="filePath" />
+		<result column="md5_" property="md5" />
+		<result column="upload_time_" property="uploadTime" />
+	</resultMap>
+
+	<sql id="field">
+		id_,
+		file_id_,
+		file_name_,
+		file_path_,
+		md5_,
+		upload_time_
+	</sql>
+
+	<sql id="condition">
+		<if test="fileName != null and fileName != ''">
+			<bind name="bind" value="'%' + _parameter.getFileName() + '%'" />
+			file_name_ like #{bind}
+		</if>
+	</sql>
+
+
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO t_source_file
+		(
+		file_id_,
+		file_name_,
+		file_path_,
+		md5_,
+		upload_time_
+		)
+		VALUES
+		(
+		#{fileId, jdbcType = VARCHAR},
+		#{fileName, jdbcType = VARCHAR},
+		#{filePath, jdbcType = VARCHAR},
+		#{md5, jdbcType = VARCHAR},
+		#{uploadTime}
+		)
+	</insert>
+
+	<select id="getByMd5" resultMap="sourceFile">
+		SELECT
+		<include refid="field" />
+		FROM t_source_file
+		WHERE
+		md5_ = #{md5}
+	</select>
+
+	<delete id="deleteById">
+		DELETE FROM t_source_file WHERE id_ = #{id}
+	</delete>
+
+	<select id="getWithCondition" resultMap="sourceFile">
+		SELECT
+			<include refid="field" />
+		FROM
+			t_source_file
+		<where>
+			<include refid="condition" />
+		</where>
+		limit #{start}, #{length}
+	</select>
+
+	<select id="getCountWithCondition" resultType="_int">
+		SELECT COUNT(*) FROM t_source_file
+		<where>
+			<include refid="condition" />
+		</where>
+	</select>
+	
+	<select id="getFilePathByfileId" resultType="string">
+		SELECT file_path_ FROM t_source_file WHERE file_id_ = #{fileId}
+	</select>
+
+
+</mapper>            

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.train.excel.dao.StationTrainDao">
+
+	<resultMap type="StationTrain" id="stationTrain">
+		<id column="id_" property="id" />
+		<result column="file_id_" property="fileId" />
+		<result column="date_" property="date" />
+		<result column="serial_num_" property="serialNum" />
+		<result column="train_num_" property="trainNum" />
+		<result column="train_type_" property="trainType" />
+		<result column="change_long_" property="changeLong" />
+		<result column="self_weight_" property="selfWeight" />
+		<result column="load_weight_" property="loadWeight" />
+		<result column="goods_name_" property="goodsName" />
+		<result column="from_station_" property="fromStation" />
+		<result column="to_station_" property="toStation" />
+		<result column="from_bureau_" property="fromBureau" />
+		<result column="to_bureau_" property="toBureau" />
+		<result column="consignee_" property="consignee" />
+		<result column="train_code_" property="trainCode" />
+	</resultMap>
+
+	<sql id="field">
+		id_,
+		file_id_,
+		date_,
+		serial_num_,
+		train_num_,
+		train_type_,
+		change_long_,
+		self_weight_,
+		load_weight_,
+		goods_name_,
+		from_station_,
+		to_station_,
+		from_bureau_,
+		to_bureau_,
+		consignee_,
+		train_code_
+	</sql>
+
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO t_station_train
+		(
+		file_id_,
+		date_,
+		serial_num_,
+		train_num_,
+		train_type_,
+		change_long_,
+		self_weight_,
+		load_weight_,
+		goods_name_,
+		from_station_,
+		to_station_,
+		from_bureau_,
+		to_bureau_,
+		consignee_,
+		train_code_
+		)
+		VALUES
+		(
+		#{fileId, jdbcType = VARCHAR},
+		#{date},
+		#{serialNum},
+		#{trainNum, jdbcType = VARCHAR},
+		#{trainType, jdbcType = VARCHAR},
+		#{changeLong},
+		#{selfWeight},
+		#{loadWeight},
+		#{goodsName, jdbcType = VARCHAR},
+		#{fromStation, jdbcType = VARCHAR},
+		#{toStation, jdbcType = VARCHAR},
+		#{fromBureau, jdbcType = VARCHAR},
+		#{toBureau, jdbcType = VARCHAR},
+		#{consignee, jdbcType = VARCHAR},
+		#{trainCode, jdbcType = VARCHAR}
+		)
+	</insert>
+
+	<delete id="deleteByFileId">
+		DELETE FROM t_station_train WHERE file_id_ = #{fileId}
+	</delete>
+	
+	<select id="getByFileId" resultMap="stationTrain">
+		SELECT 
+		<include refid="field" />
+		FROM 
+		t_station_train
+		WHERE file_id_ = #{fileId}
+	</select>
+	
+	<select id="getByFileIdAndFrom" resultMap="stationTrain">
+		SELECT 
+		<include refid="field" />
+		FROM 
+		t_station_train
+		WHERE file_id_ = #{fileId}
+		AND from_station_ IN
+		<foreach collection="froms" item="from" open="(" separator="," close=")" index="1">
+			#{from}
+		</foreach>
+	</select>
+
+</mapper>            

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.train.excel.dao.AnalysisResult4TrainDao">
+
+	
+	<resultMap type="AnalysisResult4Station" id="analysisResult4Station">
+		<result column="train_code_" property="trainCode"/>
+		<result column="from_station_" property="fromStation"/>
+		<result column="to_station_" property="toStation"/>
+		<result column="disobey_count_" property="disobeyCount"/>
+		<result column="disobey_weight_" property="disobeyWeight"/>
+	</resultMap>
+	
+	<resultMap type="AnalysisResult4Train" id="analysisResult4Train">
+		<id column="train_code_" property="trainCode"/>
+		<result column="disobey_count_all" property="disobeyCountAll"/>
+		<result column="disobey_weight_all" property="disobeyWeightAll"/>
+		<result column="weight_all" property="weightAll"/>
+		<collection property="aras" ofType="AnalysisResult4Station" resultMap="analysisResult4Station" />
+	</resultMap>
+	
+	<select id="getAllAnalysisResult" resultMap="analysisResult4Train">
+		select 
+			train_code_, 
+			from_station_, 
+			to_station_, 
+			count(train_code_) as disobey_count_, 
+			sum(load_weight_) as disobey_weight_, 
+			(select count(id_) from t_station_train where file_id_ = #{fileId} and from_station_ in (select code_ from t_from_filter)) as disobey_count_all,
+			(select sum(load_weight_) from t_station_train where file_id_ = #{fileId} and from_station_ in (select code_ from t_from_filter)) as disobey_weight_all,
+			(select sum(load_weight_) from t_station_train where file_id_ = #{fileId}) as weight_all
+		from 
+		   (select * from t_station_train where file_id_ = #{fileId} and from_station_ in (select code_ from t_from_filter)) t
+		group by train_code_, from_station_, to_station_  
+	</select>
+</mapper>            

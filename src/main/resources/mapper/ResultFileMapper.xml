@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.train.excel.dao.ResultFileDao">
+
+	<resultMap type="ResultFile" id="resultFile">
+		<id column="id_" property="id" />
+		<result column="src_file_id_" property="srcFileId" />
+		<result column="file_path_" property="filePath" />
+		<result column="file_name_" property="fileName" />
+		<result column="create_time_" property="createTime" />
+	</resultMap>
+
+
+	<sql id="condition">
+		<if test="fileName != null and fileName != ''">
+			<bind name="bind" value="'%' + _parameter.getFileName() + '%'" />
+			file_name_ like #{bind}
+		</if>
+	</sql>
+
+	<sql id="field">
+		id_,
+		src_file_id_,
+		file_path_,
+		file_name_,
+		create_time_
+	</sql>
+
+
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO t_result_file
+		(
+		src_file_id_,
+		file_path_,
+		file_name_,
+		create_time_
+		)
+		VALUES
+		(
+		#{srcFileId, jdbcType = VARCHAR},
+		#{filePath, jdbcType = VARCHAR},
+		#{fileName, jdbcType = VARCHAR},
+		#{createTime}
+		)
+	</insert>
+
+	<delete id="deleteById">
+		DELETE FROM t_result_file WHERE id_ = #{id}
+	</delete>
+
+	<select id="getWithCondition">
+		SELECT 
+			<include refid="field" />
+		FROM
+			t_result_file
+		<where>
+			<include refid="condition" />
+		</where>
+		limit #{start}, #{length}
+	</select>
+
+	<select id="getCountWithCondition">
+		SELECT COUNT(id_) FROM t_result_file
+		<where>
+			<include refid="condition" />
+		</where>
+	</select>
+
+
+
+</mapper>            
