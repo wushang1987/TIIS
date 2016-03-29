@@ -1,0 +1,4 @@
+
+$('#creatFileTable').DataTable( {
+        "ordering": false,
+    } );

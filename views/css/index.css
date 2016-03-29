@@ -1,0 +1,13 @@
+body{
+	margin: 0px;
+	padding: 0px;
+
+	font-family: "arial","微软雅黑";
+}
+
+.logo{
+	       width: 30px;
+    float: left;
+    margin-top: -6px;
+    margin-right: 9px;
+}
