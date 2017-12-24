@@ -37,4 +37,8 @@ public interface ResultFileDao {
 	 * @return
 	 */
 	int getCountWithCondition(FileDto condition);
+
+	String getFilePathById(Long id);
+
+	String getFileNameById(Long id);
 }

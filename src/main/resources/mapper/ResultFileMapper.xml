@@ -51,7 +51,7 @@
 		DELETE FROM t_result_file WHERE id_ = #{id}
 	</delete>
 
-	<select id="getWithCondition">
+	<select id="getWithCondition" resultMap="resultFile">
 		SELECT 
 			<include refid="field" />
 		FROM
@@ -62,13 +62,19 @@
 		limit #{start}, #{length}
 	</select>
 
-	<select id="getCountWithCondition">
+	<select id="getCountWithCondition" resultType="_int">
 		SELECT COUNT(id_) FROM t_result_file
 		<where>
 			<include refid="condition" />
 		</where>
 	</select>
 
-
+	<select id="getFilePathById" resultType="string">
+		select file_path_ from t_result_file where id_ = #{id}
+	</select>
+	
+	<select id="getFileNameById" resultType="string">
+		select file_name_ from t_result_file where id_ = #{id}
+	</select>
 
 </mapper>            

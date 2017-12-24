@@ -60,7 +60,7 @@ public class SourceFileController {
 	 * @return
 	 * @throws IOException
 	 */
-	@RequestMapping(path = "/delete/{id}", method = RequestMethod.GET)
+	@RequestMapping(path = "/delete/{id}/{fileid}", method = RequestMethod.GET)
 	public Object deleteById(@PathVariable("id") Long id, @PathVariable("fileid") String fileId) throws IOException {
 		String filePath = service.getFilePathByfileId(fileId);
 		String realFilePath = sc.getRealPath(filePath );

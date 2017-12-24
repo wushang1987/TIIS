@@ -42,7 +42,7 @@ public class FileUploadController {
 			String destPath = sc.getRealPath(FilePathConstants.UPLOAD_SRC_FILE_PATH);
 			return service.saveContentAndfile(file, destPath);
 		}
-		return new Status(1, "file is empty");
+		return new Status(1, "这个文件是空的");
 	}
 
 }

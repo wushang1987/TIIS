@@ -5,8 +5,31 @@
 
 <mapper namespace="com.train.excel.dao.FromFilterDao">
 
-	<select id="getAllCode" resultType="string">
-		SELECT code_ FROM t_from_filter;
+	<resultMap type="FromFilter" id="fromFilter">
+		<id column="id_" property="id" />
+		<result column="code_" property="code" />
+		<result column="create_time_" property="createTime" />
+	</resultMap>
+
+<sql id="condition">
+		<if test="fileName != null and fileName != ''">
+			<bind name="bind" value="'%' + _parameter.getFileName() + '%'" />
+			file_name_ like #{bind}
+		</if>
+	</sql>
+	
+<sql id="field">
+		id_,
+		code_,
+		create_time_
+	</sql>
+
+	<select id="getAllCode" resultMap="fromFilter">
+		SELECT 
+			<include refid="field" />
+		FROM
+			t_from_filter
+		limit #{start}, #{length}
 	</select>
 	
 	<insert id="save" useGeneratedKeys="true" keyProperty="id">
@@ -23,8 +46,12 @@
 	</insert>
 
 	<delete id="deleteById">
-		DELETE FROM t_from_filter WHERE id_ #{id}
+		DELETE FROM t_from_filter WHERE id_ = #{id}
 	</delete>
+	
+	<select id="getFromFiltCodeCount" resultType="_int">
+		SELECT COUNT(id_) FROM t_from_filter
+	</select>
 
 
 </mapper>            

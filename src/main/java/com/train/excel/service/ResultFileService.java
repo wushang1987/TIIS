@@ -46,4 +46,13 @@ public interface ResultFileService {
 	 * @throws IOException
 	 */
 	void deleteFileAndDb(Long id, String realFilePath) throws IOException;
+
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	String getFilePathById(Long id);
+	
+	String getFileNameById(Long id);
 }

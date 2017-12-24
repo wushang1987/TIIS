@@ -2,6 +2,9 @@ package com.train.excel.domain;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.train.excel.utils.JsonDateFormatSerializer;
+
 /**
  * 结果文件
  * 
@@ -24,6 +27,12 @@ public class ResultFile {
 	 * 文件路径
 	 */
 	private String filePath;
+	
+	/**
+	 * 文件Id
+	 */
+	private String fileId;
+	
 
 	/**
 	 * 文件名字
@@ -33,6 +42,7 @@ public class ResultFile {
 	/**
 	 * 上传时间
 	 */
+	@JsonSerialize(using = JsonDateFormatSerializer.class)
 	private Date createTime;
 
 	public Long getId() {
@@ -73,6 +83,14 @@ public class ResultFile {
 
 	public void setSrcFileId(String srcFileId) {
 		this.srcFileId = srcFileId;
+	}
+
+	public String getFileId() {
+		return fileId;
+	}
+
+	public void setFileId(String fileId) {
+		this.fileId = fileId;
 	}
 
 }

@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.train.excel.controller.dto.FileDto;
@@ -22,6 +23,7 @@ import com.train.excel.service.ResultFileService;
 @Named
 public class ResultFileServiceImpl implements ResultFileService {
 
+	@Inject
 	private ResultFileDao dao;
 
 	/*
@@ -81,6 +83,17 @@ public class ResultFileServiceImpl implements ResultFileService {
 	public void deleteFileAndDb(Long id, String realFilePath) throws IOException {
 		deleteById(id);
 		Files.deleteIfExists(Paths.get(realFilePath));
+	}
+
+	@Override
+	public String getFilePathById(Long id) {
+		return dao.getFilePathById(id);
+	}
+
+	@Override
+	public String getFileNameById(Long id) {
+		// TODO Auto-generated method stub
+		return dao.getFileNameById(id);
 	}
 
 }
